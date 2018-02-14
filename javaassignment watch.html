@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+  <head>
+<script>
+
+function setbackground()
+{
+    var backgcolor= 9;
+	var time = document.getElementById("time").value;
+    var set = window.setTimeout( "setbackground()", time);
+
+var index = Math.round(Math.random() * backgcolor);
+
+var ColorValue = "FFFFFF"; 
+    if(index == 1)
+        ColorValue = "FFFFFF"; 
+    if(index == 2)
+        ColorValue = "FF0000"; 
+    if(index == 3)
+        ColorValue = "F80000"; 
+    if(index == 4)
+        ColorValue = "000000"; 
+    if(index == 5)
+        ColorValue = "FFCCBB"; 
+    if(index == 6)
+        ColorValue = "334FFC"; 
+    if(index == 7)
+       ColorValue = "CCCC22"; 
+    if(index == 8)
+        ColorValue = "3366FF"; 
+   if(index == 9)
+        ColorValue = "CCCCCC"; 
+
+document.getElementsByTagName("body")[0].style.backgroundColor = "#" + ColorValue;
+}
+
+window.onload = function () 
+    {
+    
+        setInterval(showClock, 1000);
+        function showClock() 
+        {
+
+             
+            var canvas = document.getElementById('canvas');
+            var ctx = canvas.getContext('2d');
+            var date = new Date;
+            var angle;
+            var secHandLength = 60;
+             
+            ctx.clearRect(0, 0, canvas.width, canvas.height);        
+            OUTER_DIAL1();
+            OUTER_DIAL2();
+            CENTER_DIAL();
+            MARK_THE_HOURS();
+            MARK_THE_SECONDS();
+            SHOW_SECONDS();
+            SHOW_MINUTES();
+            SHOW_HOURS();
+            function OUTER_DIAL1() 
+            {
+                ctx.beginPath();
+                ctx.arc(canvas.width / 2, canvas.height / 2, secHandLength + 10, 0, Math.PI * 2);
+                ctx.strokeStyle = 'black';
+                ctx.stroke();
+            }
+            
+            function OUTER_DIAL2() 
+            {
+                ctx.beginPath();
+                ctx.arc(canvas.width / 2, canvas.height / 2, secHandLength + 7, 0, Math.PI * 2);
+                ctx.strokeStyle = '#00AC86';
+                ctx.stroke();
+            }
+            
+            function CENTER_DIAL() 
+            {
+                ctx.beginPath();
+                ctx.arc(canvas.width / 2, canvas.height / 2, 2, 0, Math.PI * 2);
+                ctx.lineWidth = 3;
+                ctx.fillStyle = '#353535';
+                ctx.strokeStyle = '#0C3D4A';
+                ctx.stroke();
+            }
+            function MARK_THE_HOURS() 
+            {
+                for (var i = 0; i < 12; i++) 
+                {
+                    angle = (i - 3) * (Math.PI * 2) / 12;       
+                    ctx.lineWidth = 1;            
+                    ctx.beginPath();
+                    var x1 = (canvas.width / 2) + Math.cos(angle) * (secHandLength);
+                    var y1 = (canvas.height / 2) + Math.sin(angle) * (secHandLength);
+                    var x2 = (canvas.width / 2) + Math.cos(angle) * (secHandLength - (secHandLength / 7));
+                    var y2 = (canvas.height / 2) + Math.sin(angle) * (secHandLength - (secHandLength / 7));
+                    ctx.moveTo(x1, y1);
+                    ctx.lineTo(x2, y2);
+                    ctx.strokeStyle = '#00AC86';
+                    ctx.stroke(); 
+                } 
+            }
+            function MARK_THE_SECONDS() {
+                for (var i = 0; i < 60; i++) {
+                    angle = (i - 3) * (Math.PI * 2) / 60;       
+                    ctx.lineWidth = 1;            
+                    ctx.beginPath();
+                    var x1 = (canvas.width / 2) + Math.cos(angle) * (secHandLength);
+                    var y1 = (canvas.height / 2) + Math.sin(angle) * (secHandLength);
+                    var x2 = (canvas.width / 2) + Math.cos(angle) * (secHandLength - (secHandLength / 30));
+                    var y2 = (canvas.height / 2) + Math.sin(angle) * (secHandLength - (secHandLength / 30));
+                    ctx.moveTo(x1, y1);
+                    ctx.lineTo(x2, y2);
+                    ctx.strokeStyle = 'black';
+                    ctx.stroke();
+                }
+            }
+            function SHOW_SECONDS() 
+            {
+                var sec = date.getSeconds();
+                angle = ((Math.PI * 2) * (sec / 60)) - ((Math.PI * 2) / 4);
+                ctx.lineWidth = 0.5;           
+                ctx.beginPath();
+                ctx.moveTo(canvas.width / 2, canvas.height / 2);                    
+                ctx.lineTo((canvas.width / 2 + Math.cos(angle) * secHandLength),    
+                    canvas.height / 2 + Math.sin(angle) * secHandLength);
+                
+                ctx.moveTo(canvas.width / 2, canvas.height / 2);       
+                ctx.lineTo((canvas.width / 2 - Math.cos(angle) * 20),      
+                    canvas.height / 2 - Math.sin(angle) * 20);
+                ctx.strokeStyle = 'blue';        
+                ctx.stroke();
+            
+            }
+            function SHOW_MINUTES() 
+            {
+                var min = date.getMinutes();
+                angle = ((Math.PI * 2) * (min / 60)) - ((Math.PI * 2) / 4);
+                ctx.lineWidth = 1.5;               
+                ctx.beginPath();
+                ctx.moveTo(canvas.width / 2, canvas.height / 2);        
+                ctx.lineTo((canvas.width / 2 + Math.cos(angle) * secHandLength / 1.1),  
+                    canvas.height / 2 + Math.sin(angle) * secHandLength / 1.1);
+                ctx.strokeStyle = 'orange';  
+                ctx.stroke();
+            }
+            function SHOW_HOURS() {
+                var hour = date.getHours();
+                var min = date.getMinutes();
+                angle = ((Math.PI * 2) * ((hour * 5 + (min / 60) * 5) / 60)) - ((Math.PI * 2) / 4);
+                ctx.lineWidth = 1.5;              
+                ctx.beginPath();
+                ctx.moveTo(canvas.width / 2, canvas.height / 2);    
+                ctx.lineTo((canvas.width / 2 + Math.cos(angle) * secHandLength / 1.5),    
+                    canvas.height / 2 + Math.sin(angle) * secHandLength / 1.5);
+                ctx.strokeStyle = 'black';  
+                ctx.stroke();
+            }
+        }  
+    }
+</script>
+<style>
+h1{
+text-align: center;
+color:#10739f;
+}
+h3{
+text-align: center;
+color:#10739f;
+}
+body
+{
+ background-color: #8eeffa;
+}
+}
+</style>
+</head>
+<body align= "center">
+<div>
+    <h1><b style="font-size: 36px;" >Change background color on refresh</b></h1>
+	<h3><b style="font-size: 30px;"> Input Milliseconds</b></h3>
+	<input type ="text" name="time" id="time" style="font-family:initial;">
+ <input type="button" id= "button" value="Refresh" style="color:black" onClick="setbackground();">
+</div>
+  <div>  
+  <h3 style="font-family: initial;"> Current time:</h3>
+  <canvas id="canvas" width="1350" height="200">
+    </canvas>
+</div>
+
+</body>
+</html> 
+
